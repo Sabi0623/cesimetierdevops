@@ -1,0 +1,13 @@
+name: first pipeline
+on:
+  push:
+    branches: [main]
+jobs:
+  docker_archi:
+  runs-on: ubuntu-latest
+  steps:
+    -uses: action/checkout@v2
+    -name: run docker compose
+     run: docker compose up --build
+     -name: stop docker compose
+      run: docker compose stop
