@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql:9.3
+    restart: always
+    volumes: 
+      - ./sqlfiles:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  server:
+    restart: on-failure
+    image: python-api
+    volumes:
+      - ./Server:/app
+    build:
+      context: ./Server
+    ports:
+      - 8000:8000
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_ROOT_PASSWORD
+      - PORT=8000
+    depends_on:
+      - db
+    command: uvicorn server:app --proxy-headers --host 0.0.0.0 --port 8000
