@@ -8,6 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: run docker compose
-        run: docker compose up --build
+        run: docker compose up --build --detach
       - name: stop docker compose
         run: docker compose stop
